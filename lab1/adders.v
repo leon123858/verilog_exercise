@@ -37,6 +37,14 @@ module rca_gl(
 	);
 
 	// TODO:: Implement gate-level RCA
+	wire [1:0] C;
+	wire [2:0] S_int;
+
+	FA fa0(C[0], S_int[0], A[0], B[0], C0);
+	FA fa1(C[1], S_int[1], A[1], B[1], C[0]);
+	FA fa2(C3, S_int[2], A[2], B[2], C[1]);
+
+	assign S = S_int;
 endmodule
 
 // carry-lookahead adder, gate level modeling
@@ -49,7 +57,20 @@ module cla_gl(
 	);
 
 	// TODO:: Implement gate-level CLA
-		
+	wire [2:0] p;
+	wire [2:0] g;
+	wire [2:0] c;
+	wire [2:0] s;
+
+	assign p = A ^ B;
+	assign g = A & B;
+	assign c[0] = g[0] | (p[0] & C0);
+	assign c[1] = g[1] | (p[1] & c[0]);
+	assign c[2] = g[2] | (p[2] & c[1]);
+
+	assign s = A ^ B ^ c;
+	assign S = s;
+	assign C3 = c[2];
 endmodule
 
 `endif

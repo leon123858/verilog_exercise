@@ -10,7 +10,8 @@ module lab1_main();
 	adder_rtl adder(c3, s, a, b, c0);
 
 	// TODO:: Try to connect the module into our test bench
-	//?? adder_gl(c3_gl, s_gl, a, b, c0);
+	// rca_gl adder_instance(c3_gl, s_gl, a, b, c0);
+	cla_gl adder_instance(c3_gl, s_gl, a, b, c0);
 	
 
 	// track the maximum delays
