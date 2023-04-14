@@ -50,3 +50,6 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+lab1/compiled_file.vpp
+lab1/lab1.vpp
+lab1/lab1.vcd
