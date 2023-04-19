@@ -8,6 +8,11 @@ sudo apt-get install iverilog
 sudo apt-get install gtkwave
 ```
 
+optional: install formatter
+
+download from `https://github.com/ericsonj/verilog-format` for install in linux
+by the way, you need to `sudo apt update && sudo apt install default-jre` for JAVA
+
 ## basic operation (Hello World)
 
 compile && simulate "Hello"

@@ -20,4 +20,6 @@ wave:
 
 clean:
 	rm ./*.vpp || true && rm ./*.vcd
-	
+
+format:
+	verilog-format -f adders.v && verilog-format -f lab1.v
