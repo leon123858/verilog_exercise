@@ -15,7 +15,7 @@ by the way, you need to `sudo apt update && sudo apt install default-jre` for JA
 
 ## basic operation (Hello World)
 
-compile && simulate "Hello"
+compile && simulate "Hello.v"
 ```
 iverilog -o compiled_file.vpp Hello.v && vvp compiled_file.vpp
 ```
