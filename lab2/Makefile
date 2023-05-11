@@ -17,5 +17,8 @@ simulate:
 view:
 	$(VIEW_TOOL) lab2.vcd lab2.sav
 
+clean:
+	rm ./*.vvp || true && rm ./*.vcd
+
 format:
 	$(FORMATER) -f lab2.v
