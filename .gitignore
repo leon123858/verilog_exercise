@@ -56,3 +56,5 @@ dkms.conf
 lab1/compiled_file.vpp
 lab1/lab1.vpp
 lab1/lab1.vcd
+lab2/lab2.vvp
+lab2/lab2.vcd
