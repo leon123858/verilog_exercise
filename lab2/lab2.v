@@ -15,24 +15,27 @@ wire[4:1] pp1 = a_s0 & {4{b_s0[1]}}; // ignore the delays of AND gates
 wire[5:2] pp2 = a_s0 & {4{b_s0[2]}}; // ignore the delays of AND gates
 wire[6:3] pp3 = a_s0 & {4{b_s0[3]}}; // ignore the delays of AND gates
 reg[5:1] sum1;
-always @(pp0, pp1)
+always @(pp0, pp1) begin
     sum1[5:1] <= #7 pp0[3:1] + pp1[4:1]; // delay of the 4-bit adder
-    reg[7:3] sum3;
-    always @(pp2, pp3)
-        sum3[7:3] <= #7 pp2[5:3] + pp3[6:3]; // delay of the 4-bit adder
-        reg[5:0] sum1_s1;
-        reg[7:2] sum3_s1;
-        always @(posedge clk) begin
-            sum1_s1 <= {sum1, pp0[0]};
-            sum3_s1 <= {sum3, pp2[2]};
-        end
-        // stage 2 (outout)
-        reg[7:2] sum2;
-        always @(sum1_s1, sum3_s1)
-            sum2[7:2] <= #8 sum1_s1[5:2] + sum3_s1[7:2]; // delay of the 6-bit adder
-            always @(posedge clk) begin
-                P <= {sum2, sum1_s1[1:0]};
-            end
+end
+reg[7:3] sum3;
+always @(pp2, pp3) begin
+    sum3[7:3] <= #7 pp2[5:3] + pp3[6:3]; // delay of the 4-bit adder
+end // state 1 end =>  7 tick
+reg[5:0] sum1_s1;
+reg[7:2] sum3_s1;
+always @(posedge clk) begin
+    sum1_s1 <= {sum1, pp0[0]};
+    sum3_s1 <= {sum3, pp2[2]};
+end
+// stage 2 (outout)
+reg[7:2] sum2;
+always @(sum1_s1, sum3_s1) begin
+    sum2[7:2] <= #8 sum1_s1[5:2] + sum3_s1[7:2]; // delay of the 6-bit adder
+end // state 2 end => 8 tick
+always @(posedge clk) begin
+    P <= {sum2, sum1_s1[1:0]};
+end // state 3 end => 0 tick
 endmodule
 
 // test bench
@@ -42,17 +45,17 @@ module mult_tb();
         $dumpfile("lab2.vcd");
         $dumpvars(0, mult_tb);
     end
-    // clock cycle = 10 ticks
+    // clock cycle = 10 ticks => 8 tick
     reg clock = 1;
     always
-    #5 clock <= ~clock;
+    #4 clock <= ~clock;
     // multiplier
     reg[3:0] A, B;
     wire[7:0] P;
     reg[7:0] P_ref;
     mult_fast mult(P, A, B, clock);
     always @(posedge clock) begin
-        P_ref <= #20 A*B;
+        P_ref <= #9 A*B;
     end
     // loop through all possible inputs
     integer i;
@@ -60,7 +63,7 @@ module mult_tb();
         #9;
         for(i = 0; i<256; i = i+1) begin
             {A, B} <= i;
-            #10;
+            #8;
         end
         #21 $finish;
     end
