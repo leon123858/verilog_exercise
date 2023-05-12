@@ -7,7 +7,7 @@ FORMATER = verilog-format
 # Main target
 all: lab2.vvp
 
-# Main program
+# Script
 lab2.vvp:
 	$(VERILOG) -o lab2.vvp lab2.v
 
@@ -22,3 +22,6 @@ clean:
 
 format:
 	$(FORMATER) -f lab2.v
+
+run:
+	make clean && make && make simulate

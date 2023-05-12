@@ -51,29 +51,30 @@ module mult_tb();
     wire[7:0] P;
     reg[7:0] P_ref;
     mult_fast mult(P, A, B, clock);
-    always @(posedge clock)
+    always @(posedge clock) begin
         P_ref <= #20 A*B;
-        // loop through all possible inputs
-        integer i;
-        initial begin
-            #9;
-            for(i = 0; i<256; i = i+1) begin
-                {A, B} <= i;
-                #10;
-            end
-            #21 $finish;
+    end
+    // loop through all possible inputs
+    integer i;
+    initial begin
+        #9;
+        for(i = 0; i<256; i = i+1) begin
+            {A, B} <= i;
+            #10;
         end
-        // check if the products are correct
-        reg[3:0] A_old, B_old;
-        always @(posedge clock) begin
-            #1
-            if (!(P_ref == P) && i > 1) begin
-                A_old                             = (i-2)/16;
-                B_old                             = (i-2)%16;
-                $display("Product is wrong when A = %b, B = %b.", A_old, B_old);
-                $display("P_ref: %b.", P_ref);
-                $display("P    : %b.", P);
-                #9 $finish;
-            end
+        #21 $finish;
+    end
+    // check if the products are correct
+    reg[3:0] A_old, B_old;
+    always @(posedge clock) begin
+        #1
+        if (!(P_ref == P) && i > 1) begin
+            A_old                             = (i-2)/16;
+            B_old                             = (i-2)%16;
+            $display("Product is wrong when A = %b, B = %b.", A_old, B_old);
+            $display("P_ref: %b.", P_ref);
+            $display("P    : %b.", P);
+            #9 $finish;
         end
+    end
 endmodule
